@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inox Movie</title>
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+    <style type="text/css">
+        header {
+            background-color: black;
+        }
+
+        section {
+            background-image: url(../images/movie_poster8.webp);
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-attachment: fixed;
+            height: 100vh;
+            width: 100%;
+        }
+
+        .bg-color {
+            background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.498), rgba(128, 0, 6, 0.596));
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: cover;
+            height: 100vh;
+            width: 100%;
+
+        }
+
+        .bg-color div {
+            width: 100%;
+        }
+        #continue-button{
+            display: none;
+        }
+    </style>
+
+    <script type="text/javascript">
+
+    var MovieData = [  
+        {
+            "movieName" : "De Dhakka 2  (U/A)",
+            "selectCinema":[
+                {
+                    "cinemaName":"INOX Nakshatra Mall,Dadar (W)",
+                    "selectDate":[
+                        {
+                            "date": "TOMORROW 25th August",
+                            "selectTime":[
+                                {
+                                    "time":"01:45 PM Marathi",
+                                    "selectSeat":[1,2,3,4,5]
+                                    
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "cinemaName":"INOX Thakur Mall,Dahisar (E)",
+                    "selectDate":[
+                        {
+                            "date": "TOMORROW 25th August",
+                            "selectTime":[
+                                {
+                                    "time":"02:20 PM Marathi",
+                                    "selectSeat":[1,2,3,4,5]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "movieName" : "DC League of Super-Pets  (U)",
+            "selectCinema":[
+                {
+                    "cinemaName" : "INOX Megaplex, Inorbit Mall",
+                    "selectDate":[
+                        {
+                            "date": "TODAY 24th August",
+                            "selectTime":[
+                                {
+                                    "time":"01:45 PM Marathi",
+                                    "selectSeat":[1,2,3,4,5]
+                                    
+                                },
+                                {
+                                    "time":"03:55 PM English [KIDDLES]",
+                                    "selectSeat":[1,2,3,4,5]
+                                }
+                            ]
+                        },
+                        {
+                            "date": "TOMORROW 25th August",
+                            "selectTime":[
+                                {
+                                    "time":"01:45 PM Marathi",
+                                    "selectSeat":[1,2,3,4,5]
+                                    
+                                },
+                                {
+                                    "time":"02:40 PM English [KIDDLES]",
+                                    "selectSeat":[1,2,3,4,5]
+                                    
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "cinemaName":"INOX Laserplex, CR2, Nariman Point",
+                    "selectDate":[
+                        {
+                            "date": "TOMORROW 25th August",
+                            "selectTime":[
+                                {
+                                    "time":"03:00 PM English [LASER][ATMOS]",
+                                    "selectSeat":[1,2,3,4,5]
+                                }
+                            ]
+                        },
+                        {
+                            "date": "FRIDAY 26th August",
+                            "selectTime":[
+                                {
+                                    "time":"01:00 PM English [LASER]",
+                                    "selectSeat":[1,2,3,4,5]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+        
+    ]
+
+
+
+        function MovieLoad() {
+            var movieBox = document.getElementById("select-movie");
+            movieBox.innerHTML = "";
+            movieBox.innerHTML = `<option>Select Movie</option>`;
+            for (var i = 0; i < MovieData.length; i++) {
+                var option = document.createElement("option");
+                option.text = MovieData[i].movieName;
+                option.value = MovieData[i].movieName;
+                movieBox.appendChild(option);
+
+            }
+
+        }
+
+        function SelectMovie() {
+            var movieName = document.getElementById("select-movie").value;
+            var cinemaBox = document.getElementById("select-cinema");
+            if (movieName == "Select Movie"){
+                cinemaBox.innerHTML=""
+                cinemaBox.innerHTML="<option>Select Cinema</option>"
+                cinemaBox.disabled = true;
+            }else{
+                cinemaBox.disabled = false;
+                cinemaBox.innerHTML=""
+                cinemaBox.innerHTML="<option>Select Cinema</option>"
+            }
+            
+            for (var i = 0; i < MovieData.length; i++) {
+                var movieNameValue = MovieData[i].movieName;
+                if (movieName == movieNameValue){
+                    for (var j = 0; j < MovieData[i].selectCinema.length; j++){
+                        var option = document.createElement("option");
+                        option.text = MovieData[i].selectCinema[j].cinemaName;
+                        option.value = MovieData[i].selectCinema[j].cinemaName;
+                        cinemaBox.appendChild(option);
+                    }
+                }
+
+            }
+            
+            SelectCinema();
+            SelectDate();
+            SelectTime();
+        }
+
+        function SelectCinema(){
+            var movieName = document.getElementById("select-movie").value;
+            var cinemaName = document.getElementById("select-cinema").value;
+            var dateBox = document.getElementById("select-date");
+            if (cinemaName == "Select Cinema"){
+                dateBox.innerHTML=""
+                dateBox.innerHTML="<option>Select Date</option>"
+                dateBox.disabled = true;
+            }else{
+                dateBox.disabled = false;
+                dateBox.innerHTML=""
+                dateBox.innerHTML="<option>Select Date</option>"
+            }
+            for (var i = 0; i < MovieData.length; i++) {
+                var movieNameValue = MovieData[i].movieName;
+                if (movieName == movieNameValue){
+                    for (var j = 0; j < MovieData[i].selectCinema.length; j++){
+                        var cinemaNameValue = MovieData[i].selectCinema[j].cinemaName;
+                        if(cinemaName == cinemaNameValue){
+                            for (var k = 0; k < MovieData[i].selectCinema[j].selectDate.length; k++){
+                                var option = document.createElement("option");
+                                option.text = MovieData[i].selectCinema[j].selectDate[k].date;
+                                option.value = MovieData[i].selectCinema[j].selectDate[k].date;
+                                dateBox.appendChild(option);
+                            }
+                        }
+                    }
+                }
+
+            }
+
+            SelectDate();
+            SelectTime();
+        }
+
+        function SelectDate(){
+            var movieName = document.getElementById("select-movie").value;
+            var cinemaName = document.getElementById("select-cinema").value;
+            var date = document.getElementById("select-date").value;
+            var timeBox = document.getElementById("select-time");
+            if (date == "Select Date"){
+                timeBox.innerHTML=""
+                timeBox.innerHTML="<option>Select Timing</option>"
+                timeBox.disabled = true;
+            }else{
+                timeBox.disabled = false;
+                timeBox.innerHTML=""
+                timeBox.innerHTML="<option>Select Timing</option>"
+            }
+            for (var i = 0; i < MovieData.length; i++) {
+                var movieNameValue = MovieData[i].movieName;
+                if (movieName == movieNameValue){
+                    for (var j = 0; j < MovieData[i].selectCinema.length; j++){
+                        var cinemaNameValue = MovieData[i].selectCinema[j].cinemaName;
+                        if(cinemaName == cinemaNameValue){
+                            for (var k = 0; k < MovieData[i].selectCinema[j].selectDate.length; k++){
+                                var dateValue = MovieData[i].selectCinema[j].selectDate[k].date;
+                                if(date == dateValue){
+                                    for (var l = 0; l < MovieData[i].selectCinema[j].selectDate[k].selectTime.length; l++){
+                                        var option = document.createElement("option");
+                                        option.text = MovieData[i].selectCinema[j].selectDate[k].selectTime[l].time;
+                                        option.value = MovieData[i].selectCinema[j].selectDate[k].selectTime[l].time;
+                                        timeBox.appendChild(option);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+            }
+            
+            SelectTime();
+        }
+
+        function SelectTime(){
+            var movieName = document.getElementById("select-movie").value;
+            var cinemaName = document.getElementById("select-cinema").value;
+            var date = document.getElementById("select-date").value;
+            var time = document.getElementById("select-time").value;
+            var seatBox = document.getElementById("select-seats")
+            if (time == "Select Timing"){
+                seatBox.innerHTML=""
+                seatBox.innerHTML="<option>Select Seats</option>"
+                seatBox.disabled = true;
+            }else{
+                seatBox.disabled = false;
+                seatBox.innerHTML=""
+                seatBox.innerHTML="<option>Select Seats</option>"
+            }
+            for (var i = 0; i < MovieData.length; i++) {
+                var movieNameValue = MovieData[i].movieName;
+                if (movieName == movieNameValue){
+                    for (var j = 0; j < MovieData[i].selectCinema.length; j++){
+                        var cinemaNameValue = MovieData[i].selectCinema[j].cinemaName;
+                        if(cinemaName == cinemaNameValue){
+                            for (var k = 0; k < MovieData[i].selectCinema[j].selectDate.length; k++){
+                                var dateValue = MovieData[i].selectCinema[j].selectDate[k].date;
+                                if(date == dateValue){
+                                    for (var l = 0; l < MovieData[i].selectCinema[j].selectDate[k].selectTime.length; l++){
+                                        var timeValue = MovieData[i].selectCinema[j].selectDate[k].selectTime[l].time;
+                                        if(time == timeValue){
+                                            for (var m = 0; m < MovieData[i].selectCinema[j].selectDate[k].selectTime[l].selectSeat.length; m++){
+                                                var option = document.createElement("option");
+                                                option.text = MovieData[i].selectCinema[j].selectDate[k].selectTime[l].selectSeat[m];
+                                                option.value = MovieData[i].selectCinema[j].selectDate[k].selectTime[l].selectSeat[m];
+                                                seatBox.appendChild(option);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+            }
+        
+
+        }
+        function BookClick(){
+            var movieName = document.getElementById("select-movie").value;
+            var cinemaName = document.getElementById("select-cinema").value;
+            var date = document.getElementById("select-date").value;
+            var time = document.getElementById("select-time").value;
+            var seat = document.getElementById("select-seats").value;
+
+            if ((movieName == "Select Movie") || (cinemaName == "Select Cinema") || (date == "Select Date") || (time == "Select Timing") || (seat == "Select Seats")){
+                alert("Please Fill All Details")
+            }else{
+                alert("Continue to Book ticket")
+                document.getElementById("movie-name-value").innerHTML = movieName;
+                document.getElementById("movie-cinema-value").innerHTML = cinemaName;
+                document.getElementById("date-value").innerHTML = date;
+                document.getElementById("time-value").innerHTML = time;
+                document.getElementById("seats-value").innerHTML = seat;
+                document.getElementById("book-ticket-button").style.display="none";
+                document.getElementById("form").style.display="none";
+                document.getElementById("continue-button").style.display="block";
+            }
+        }
+
+        function ResetData(){
+            alert("You get ticket on your registerd mobile number.")
+            location.reload()
+        }
+
+        function bodyload() {
+            MovieLoad()
+        }
+    </script>
+</head>
+
+<body onload="bodyload()">
+    <header class="p-3 d-lg-flex justify-content-lg-between text-white">
+        <div class="text-danger" style="font-size:1.5rem;">
+            INOX Movies
+        </div>
+
+        <div>
+            <div class="input-group h-25">
+                <label class="input-group-text">Search Movies</label>
+                <input type="text" class="form-control">
+                <button class="btn btn-danger">
+                    <span class="bi bi-search"></span>
+                </button>
+            </div>
+        </div>
+    </header>
+    <section>
+        <div class="bg-color">
+            <div style="background-color:black;" id="book-ticket-button">
+                <button class="btn btn-dark w-100" data-bs-target="#form" data-bs-toggle="collapse">
+                    Book Ticket
+                </button>
+            </div>
+            <div class="collapse" id="form">
+                <div class="row gap-3 bg-black p-2 justify-content-around container-fluid m-0">
+                    <select id="select-movie" class="col-lg form-select" onchange="SelectMovie()">
+                        <option>Select Movie</option>
+                    </select>
+                    <select id="select-cinema" class="col-lg form-select" onchange="SelectCinema()" disabled>
+                        <option>Select Cinema</option>
+                    </select>
+                    <select id="select-date" class="col-lg form-select" onchange="SelectDate()" disabled>
+                        <option>Select Date</option>
+                    </select>
+                    <select id="select-time" class="col-lg form-select" onchange="SelectTime()" disabled>
+                        <option>Select Timing</option>
+                    </select>
+                    <select id="select-seats" class="col-lg form-select" disabled>
+                        <option>Select Seats</option>
+                    </select>
+                    <button class="btn btn-danger w-100 col-lg" onclick="BookClick()">
+                        Book
+                    </button>
+                </div>
+            </div>
+            
+            <div id="continue-button">
+                <button class="btn btn-primary w-100" data-bs-target="#ticket-details" data-bs-toggle="modal">
+                    Continue
+                </button>
+            </div>
+        </div>
+
+    </section>
+
+    <div class="modal fade" id="ticket-details">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable ">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Ticket Details</h3>
+                    <button data-bs-dismiss="modal" class="btn btn-close"></button>
+                </div>
+                <div class="modal-body">
+                    <dl class="row">
+                        <dt class="col-4">Movie Name</dt>
+                        <dd class="col-8" id="movie-name-value"></dd>
+                        <dt class="col-4">Cinema Name</dt>
+                        <dd class="col-8" id="movie-cinema-value"></dd>
+                        <dt class="col-4">Date</dt>
+                        <dd class="col-8" id="date-value"></dd>
+                        <dt class="col-4">Time</dt>
+                        <dd class="col-8" id="time-value"></dd>
+                        <dt class="col-4">Seats</dt>
+                        <dd class="col-8" id="seats-value"></dd>
+                    </dl>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-success" onclick="ResetData()">Continue</button>
+                    <button class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    <!-- JavaScript Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
+</body>
+
+</html>
